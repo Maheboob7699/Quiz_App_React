@@ -1,0 +1,25 @@
+.signup-button{
+    width: 422px;
+    height: 43px;
+    padding: 12px 24px 12px 24px;
+    font-size: 1.2rem;
+    background-color: #F3BD00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: none;
+}
+
+.login-button{
+    width: 422px;
+    height: 43px;
+    padding: 12px 24px 12px 24px;
+    font-size: 1.2rem;
+    background-color: #F3BD00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: none;
+}
