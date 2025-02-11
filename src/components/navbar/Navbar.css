@@ -1,0 +1,57 @@
+*{
+    font-family: "Poppins", serif;
+}
+
+.quizz-navbar {
+    height: 60px;
+    border-bottom: 1px solid rgb(112, 110, 110);
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+  }
+
+  .techpatshala-img{
+    margin-left: 42px;
+    height: 30px;
+  }
+  .quizz-detail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+  }
+  .logout-btn{
+    font-size: 1.5rem;
+  }
+
+  .personal-img img{
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    
+  }
+
+  .progress {
+    width: 95%;
+    height: 20px;
+    background-color: #EBEBF0;
+    border-radius: 10px;
+  }
+  
+  
+  .progress .progress-container {
+    border-radius: 10px;
+    background-color: #F3BD00;
+    height: 20px;
+    width: 0%;
+  }
+  
+  .next-button{
+    background-color: transparent;
+    border: none;
+    font-size: 1.9rem;
+    color: #0948B4;
+    margin-left: 80%;
+    margin-top: -47px;
+}
