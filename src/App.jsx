@@ -9,6 +9,7 @@ function App() {
     <>
      {/* <SignupPage/> */}
      {/* <LoginPage/> */}
+     
      <QuizzPage/>
     </>
   )
