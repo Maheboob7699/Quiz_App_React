@@ -34,6 +34,9 @@
 .required {
     color: red;
 }
+.sigunp-user-error{
+    color: red;
+}
 
  #user-name{
     width: 400px;
@@ -74,7 +77,9 @@
 
 .user-password input{
     border: none;
+    outline: none;
 }
+
 .hide-password-icon{
     margin-left: 190px;
 }

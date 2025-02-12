@@ -1,4 +1,4 @@
-import Quizz from "../containers/quizz/Quizz";
+import Quizz from "../containers/Quizz";
 
 function QuizzPage(){
     return(

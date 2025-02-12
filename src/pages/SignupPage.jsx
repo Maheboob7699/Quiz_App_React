@@ -1,4 +1,4 @@
-import Signup from "../containers/signup/Signup"
+import Signup from "../containers/Signup"
 function SignupPage(){
     return(
         <>
