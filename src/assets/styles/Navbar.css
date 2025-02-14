@@ -10,11 +10,6 @@
     align-items: center;
   }
 
-
-  /* .techpatshala-img{
-    margin-left: 42px;
-    height: 30px;
-  } */
    .techp-image{
     height: 200px;
     width: 250px;
@@ -27,6 +22,9 @@
   }
   .logout-btn{
     font-size: 1.5rem;
+  }
+  .personal-img{
+    margin-right: 50px;
   }
 
   .personal-img img{

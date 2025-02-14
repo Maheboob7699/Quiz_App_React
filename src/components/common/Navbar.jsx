@@ -1,7 +1,7 @@
 import '../../assets/styles/Navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-function Navbar() {
+function Navbar({name}) {
     return (
         <>
             <div className='quizz-navbar'>
@@ -9,7 +9,7 @@ function Navbar() {
                     <img src="src/assets/images/techpatshala.svg" alt="" className='techp-image' />
                 </div>
                 <div className='quizz-detail'>
-                    <div className='current-user'> </div>
+                    <h2 className='current-user'>{name ? name:null} </h2>
                     <div>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} className='logout-btn' />
                     </div>

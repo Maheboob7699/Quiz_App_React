@@ -1,8 +1,8 @@
 
 import { createSlice } from "@reduxjs/toolkit";
-const loadSignupData = () => JSON.parse(localStorage.getItem("userDetails")) || [];
+const loadSignupData = () => JSON.parse(localStorage.getItem("users")) || [];
 const saveData = (data) => {
-    localStorage.setItem("userDetails", JSON.stringify(data));
+    localStorage.setItem("users", JSON.stringify(data));
 }
 
 let initialState = {

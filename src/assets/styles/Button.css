@@ -29,5 +29,13 @@
     font-size: 1.9rem;
     color: #0948B4;
     margin-left: 83%;
-    margin-top: -47px;
+   position: relative;
+   top:-53px;
+}
+.previous-button{
+    margin-top: 40px;
+    font-size: 1.9rem;
+    color: #8E8E93;
+    background-color: transparent;
+    border: none;
 }

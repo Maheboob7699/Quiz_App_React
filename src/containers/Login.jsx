@@ -15,10 +15,12 @@ function Login() {
     const [loginInput, setLoginInput] = useState(initialState);
     console.log(loginInput);
     
-    const {singnupData,loginStore,error,result} = useSelector((state) => state.loginData);
+    const {singnupData,loginStore,error,result,uniqueId} = useSelector((state) => state.loginData);
     console.log(singnupData);
     console.log(loginStore);
     console.log(result);
+    console.log(uniqueId);
+    
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
