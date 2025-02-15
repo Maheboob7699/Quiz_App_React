@@ -1,51 +1,119 @@
 import '../assets/styles/Signup.css';
-import { useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash} from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import Button from '../components/common/Button';
-import { signupButton,clearError } from '../reduxToolKit/signupReducer';
-import { useSelector,useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+
 function Signup() {
+
     let initialData = {
-        name:"",
-        email:"",
-        password:"",
-    } ;
+        name: "",
+        email: "",
+        password: "",
+    };
+    const [signupData, setSignupData] = useState([]);
     const [signupInput, setSignupInput] = useState(initialData);
-    const {userData,error,result} = useSelector((state)=>state.signupData);
-    console.log(userData);
-    console.log(error);
-    console.log(result);
-    
-    
-    const dispatch=useDispatch();
+    const [error, setError] = useState({
+        email: '',
+        password: '',
+    });
+    const [loginPage, setLoginPage] = useState(false);
     const navigate = useNavigate();
 
-    function handleSignupInput(e){
-         const {name, value}= e.target;
-         setSignupInput({
-            ...signupInput,
-            [name]:value,
-         });
-         console.log(signupInput); 
-         if (error[name]) {
-            dispatch(clearError(name));
-        }
-         }
-
-    function handleAdd(){
-        dispatch(signupButton(signupInput));
-        setSignupInput(initialData);
-    }
 
     useEffect(() => {
-        console.log("Result state changed:", result);
-        if (result) {
-            navigate('/login');
+        const localSignupData = JSON.parse(localStorage.getItem("users")) || [];
+        setSignupData(localSignupData);
+    }, [])
+
+    // localStorage
+    useEffect(() => {
+        if (signupData.length > 0) {
+            localStorage.setItem("users", JSON.stringify(signupData));
+        } else {
+            localStorage.setItem("users", JSON.stringify([]));
         }
-    }, [result, navigate]);
+    }, [signupData]);
+    console.log(signupData);
+
+    useEffect(() => {
+    }, [signupInput])
+    
+
+    //   input
+    function handleSignupInput(e) {
+        const { name, value } = e.target;
+        setSignupInput({
+            ...signupInput,
+            [name]: value,
+        });
+        console.log(signupInput);
+
+        setError({ email: '', password: '' })
+    }
+
+    // login page
+    useEffect(()=>{
+        if(loginPage){
+            navigate("./login")
+        }
+    },[loginPage])
+
+    // signup button
+    function signupButton() {
+        const { name, email, password } = signupInput;
+        if (name === "" && email === "" && password === "") {
+            alert("all fields are required")
+            return;
+        };
+
+        if (!email.includes("@")) {
+            setError({ email: "@ is missing" });
+            return
+        }
+
+        if (!email.includes(".com")) {
+            setError({ email:".com is missing"});
+            return
+        }
+
+        if (password.length < 6) {
+            setError({ password: "password must be at least 6 character long" });
+            return;
+        }
+
+        if (!/[a-z]/.test(password)) {
+            setError({ password: "Password must contain at least one lowercase letter" });
+            return;
+        }
+
+        if (!/[0-9]/.test(password)) {
+            setError({ password: "Password must contain at least one number" });
+            return;
+        }
+
+        if (!/[@$!%*?&]/.test(password)) {
+            setError({ password: "Password must contain at least one special character (@, $, !, %, *, ?, &)" });
+            return;
+        }
+
+        let duplicateData = signupData.find((item)=> (item.name === name || item.email === email || item.password)
+        )
+
+        if(!duplicateData){
+            let updatedData =[...signupData,signupInput];
+            setSignupData(updatedData);
+            localStorage.setItem("users",JSON.stringify(updatedData));
+            alert("signup succesfully")
+            setLoginPage(true);
+        }
+        else{
+            alert("user already exist");
+            return
+        }
+    }
 
     return (
         <>
@@ -63,7 +131,7 @@ function Signup() {
                         <label htmlFor="">
                             Full Name <span className='required'>*</span>
                         </label> <br />
-                        <input type="text" placeholder='Enter your name'id='user-name' name='name' value={signupInput.name}  onChange={handleSignupInput}/>
+                        <input type="text" placeholder='Enter your name' id='user-name' name='name' value={signupInput.name} onChange={handleSignupInput} />
                     </div>
 
                     <div>
@@ -72,34 +140,34 @@ function Signup() {
                         </label> <br />
                         <input type="email" placeholder='Enter your email' id='user-email' name='email' value={signupInput.email} onChange={handleSignupInput} />
                     </div>
-                    {error ? <div className="sigunp-user-error">{error.email}</div>:null}
-                    
-                        <div>
-                            <label htmlFor="">
-                                password <span className='required'>*</span>
-                            </label>
-                            <div className='user-password'>
-                              <input type="password" placeholder='Enter password' name='password' value={signupInput.password} onChange={handleSignupInput} />
-                              <FontAwesomeIcon icon={faEyeSlash} className='hide-password-icon' />
-                            </div>
-                        </div>
+                    {error.email ? <div className="sigunp-user-error">{error.email}</div> : null}
 
-                        <div className="sigunp-user-error"></div>
-
-                        <label htmlFor="" className='check-terms'>
-                            <input type="checkbox" />
-                            I accept <span>terms & condition</span>
-                        </label> <br />
-                        <Button title="Signup" textName="signup-button" onClick={handleAdd} />
-                        <div className='google-icon'>
-                        <img src="src/assets/images/google.png" alt="" />
-                            <p>signup with google</p>
+                    <div>
+                        <label htmlFor="">
+                            password <span className='required'>*</span>
+                        </label>
+                        <div className='user-password'>
+                            <input type="password" placeholder='Enter password' name='password' value={signupInput.password} onChange={handleSignupInput} />
+                            <FontAwesomeIcon icon={faEyeSlash} className='hide-password-icon' />
                         </div>
-                        <p className='switch-login'>Dont have an account? <a href="">Login ?</a></p>
                     </div>
+
+                    <div className="sigunp-user-error"></div>
+
+                    <label htmlFor="" className='check-terms'>
+                        <input type="checkbox" />
+                        I accept <span>terms & condition</span>
+                    </label> <br />
+                    <Button title="Signup" textName="signup-button" onClick={signupButton} />
+                    <div className='google-icon'>
+                        <img src="src/assets/images/google.png" alt="" />
+                        <p>signup with google</p>
+                    </div>
+                    <p className='switch-login'>Dont have an account? <a href="">Login ?</a></p>
                 </div>
-            </>
-            );
+            </div>
+        </>
+    );
 }
 
-            export default Signup;
+export default Signup;

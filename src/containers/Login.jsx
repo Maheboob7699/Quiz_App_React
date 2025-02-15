@@ -1,57 +1,133 @@
-import '../assets/styles/Login.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import '../assets/styles/Login.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Button from '../components/common/Button';
-import { useState,useEffect } from 'react';
-import { loginButton,checkError } from '../reduxToolKit/loginReducer';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 let initialState = {
     email: "",
     password: "",
-}
+};
+
 function Login() {
     const [loginInput, setLoginInput] = useState(initialState);
+    const [signupData, setSignupData] = useState([]);
+    const [loginData, setLoginData]= useState([]);
+    const [quizzPage, setQuizzPage]= useState(false);
+
+    const navigate = useNavigate();
+  
+    // input for loginInput
+    useEffect(()=>{
+    },[loginInput])
     console.log(loginInput);
     
-    const {singnupData,loginStore,error,result,uniqueId} = useSelector((state) => state.loginData);
-    console.log(singnupData);
-    console.log(loginStore);
-    console.log(result);
-    console.log(uniqueId);
-    
-    
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    function handleLogin() {
-        dispatch(loginButton(loginInput))
-    }
+    // Load signup data from local storage when the component mounts
+    useEffect(() => {
+        const loadSignupData = JSON.parse(localStorage.getItem("users")) || [];
+        setSignupData(loadSignupData);
+    }, []);
 
+
+    //store data of login form in lcoal Storage
+    useEffect(()=>{
+        let existingUsers = JSON.parse(localStorage.getItem("userDetails")) || [];
+        setLoginData(existingUsers);
+    },[])
+    console.log(signupData);
+
+
+    // navigate to quizz page
+
+    useEffect(()=>{
+        if(quizzPage){
+            navigate("/quizz");
+        }
+    },[quizzPage])
+    
     function handleLoginInput(e) {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setLoginInput({
             ...loginInput,
             [name]: value,
-        })
-        console.log(loginInput);
-         dispatch(checkError(name))
+        });
     }
 
-       useEffect(() => {
-            console.log("Result state changed:", result);
-            if (result) {
-                navigate('/quizz');
-            }
-        }, [result, navigate]);
 
+    function loginButton() {
+        const { email, password } = loginInput;
+           
+        let duplicateData = signupData.find((item)=>
+             item.email === email && item.password === password
+        )
+        if(duplicateData){
+
+            let loginDuplicate = loginData.find((item)=>
+                item.email === email
+            )
+            if(!loginDuplicate){
+                let userData = { 
+                    name: duplicateData.name,
+                    email: duplicateData.email,
+                    score:0,  
+                    user:[],
+                };
+                let updateData = [...loginData, userData];
+                setLoginData(updateData);
+                localStorage.setItem("userDetails",JSON.stringify(updateData));
+                alert("login succesfully");
+            }
+            else{
+                alert("user is already exist")
+            } 
+            setQuizzPage(true);
+        }
+        else{
+            alert("invalid User");
+            setLoginInput(initialState)
+            return;
+        }
+   
+    }
+    // function loginButton() {
+    //     const { email, password } = loginInput;
     
+    //     // Find user in signup data
+    //     let duplicateData = signupData.find(
+    //         (item) => item.email === email
+    //     );
+    
+    //     if (duplicateData) {
+    //         let loginDuplicate = loginData.find(user => user.email === email);
+    
+    //         if (!loginDuplicate) {
+    //             let userData = { 
+    //                 name: duplicateData.name,
+    //                 email: duplicateData.email,
+    //                 score: 0,  
+    //                 user: [],
+    //             };
+    //             let updatedUsers = [...loginData, userData];
+    //             setLoginData(updatedUsers);
+    //             localStorage.setItem("userDetails", JSON.stringify(updatedUsers));
+    //             alert("Login successful!");
+    //         } else {
+    //             alert("User is already logged in!");
+    //         }
+    //     } else {
+    //         alert("Invalid User");
+    //         setLoginInput(initialState);
+    //     }
+    // }
+    
+
     return (
         <>
             <div className='login-container'>
                 <div className='quizz-image'>
-                    <img src="src/assets/images/quizz.png" alt="" />
+                    <img src="src/assets/images/quizz.png" alt="Quiz logo" />
                 </div>
 
                 <div className='login-form'>
@@ -59,34 +135,50 @@ function Login() {
                     <p>Please enter your details below.</p>
 
                     <div>
-                        <label htmlFor="">
-                            Full Name <span className='required'>*</span>
-                        </label> <br />
-                        <input type="text" placeholder='Enter your name' id='user-name' name='email' value={loginInput.email} onChange={handleLoginInput} />
+                        <label htmlFor="email">
+                            Email <span className='required'>*</span>
+                        </label>
+                        <br />
+                        <input
+                            type="email"
+                            placeholder='Enter your email'
+                            id='user-email'
+                            name='email'
+                            value={loginInput.email}
+                            onChange={handleLoginInput}
+                        />
+                        {/* {error.email && <div className="login-user-error">{error.email}</div>} */}
                     </div>
-                    {error ? <div className="login-user-error">{error.email}</div>:null}
+
                     <div>
-                        <label htmlFor="">
-                            password <span className='required'>*</span>
+                        <label htmlFor="password">
+                            Password <span className='required'>*</span>
                         </label>
                         <div className='user-password'>
-                            <input type="password" placeholder='Enter password' name='password' value={loginInput.password} onChange={handleLoginInput} />
+                            <input
+                                type="password"
+                                placeholder='Enter password'
+                                name='password'
+                                value={loginInput.password}
+                                onChange={handleLoginInput}
+                            />
                             <FontAwesomeIcon icon={faEyeSlash} className='hide-password-icon' />
                         </div>
+                        {/* {error.password && <div className="login-user-error">{error.password}</div>} */}
                     </div>
-                    {error ? <div className="login-user-error">{error.password}</div>:null}
 
-                    <div className="login-user-error"></div>
-                    <Button title="login" textName="login-button" onClick={handleLogin} />
+                    <Button title="Login" textName="login-button" onClick={loginButton} />
+                    
                     <div className='google-icon'>
-                        <img src="src/assets/images/google.png" alt="" />
-                        <p>login with google</p>
+                        <img src="src/assets/images/google.png" alt="Google login" />
+                        <p>Login with Google</p>
                     </div>
-                    <p className='switch-login'>Dont have an account? <a href="">Signup ?</a></p>
+                    
+                    <p className='switch-login'>Don't have an account? <a href="/signup">Signup</a></p>
                 </div>
             </div>
         </>
-    )
+    );
 }
 
-export default Login
+export default Login;
