@@ -13,16 +13,18 @@ let initialState = {
 function Login() {
     const [loginInput, setLoginInput] = useState(initialState);
     const [signupData, setSignupData] = useState([]);
-    const [loginData, setLoginData]= useState([]);
-    const [quizzPage, setQuizzPage]= useState(false);
+    const [loginData, setLoginData] = useState([]);
+    const [quizzPage, setQuizzPage] = useState(false);
+    const savedUniqueId = JSON.parse(localStorage.getItem("uniqueId")) || 0;
+    const [uniqueId, setUniqueId] = useState(savedUniqueId);
+    console.log("unique id", uniqueId);
 
     const navigate = useNavigate();
-  
+
     // input for loginInput
-    useEffect(()=>{
-    },[loginInput])
+    useEffect(() => {
+    }, [loginInput])
     console.log(loginInput);
-    
 
     // Load signup data from local storage when the component mounts
     useEffect(() => {
@@ -31,22 +33,24 @@ function Login() {
     }, []);
 
 
+
+
     //store data of login form in lcoal Storage
-    useEffect(()=>{
+    useEffect(() => {
         let existingUsers = JSON.parse(localStorage.getItem("userDetails")) || [];
         setLoginData(existingUsers);
-    },[])
+    }, [])
     console.log(signupData);
 
 
     // navigate to quizz page
 
-    useEffect(()=>{
-        if(quizzPage){
+    useEffect(() => {
+        if (quizzPage) {
             navigate("/quizz");
         }
-    },[quizzPage])
-    
+    }, [quizzPage])
+
     function handleLoginInput(e) {
         const { name, value } = e.target;
         setLoginInput({
@@ -58,50 +62,56 @@ function Login() {
 
     function loginButton() {
         const { email, password } = loginInput;
-           
-        let duplicateData = signupData.find((item)=>
-             item.email === email && item.password === password
-        )
-        if(duplicateData){
 
-            let loginDuplicate = loginData.find((item)=>
+        let duplicateData = signupData.find((item) =>
+            item.email === email && item.password === password
+        )
+        if (duplicateData) {
+
+            let loginDuplicate = loginData.find((item) =>
                 item.email === email
             )
-            if(!loginDuplicate){
-                let userData = { 
+            if (!loginDuplicate) {
+
+                let newUniqueId = loginData.length === 0 ? uniqueId : uniqueId + 1; 
+                setUniqueId(newUniqueId);
+                let userData = {
+                    id: newUniqueId,
                     name: duplicateData.name,
                     email: duplicateData.email,
-                    score:0,  
-                    user:[],
+                    score: 0,
+                    user: [],
                 };
                 let updateData = [...loginData, userData];
+                console.log("unique id", uniqueId);
+                localStorage.setItem("uniqueId", JSON.stringify(newUniqueId));
                 setLoginData(updateData);
-                localStorage.setItem("userDetails",JSON.stringify(updateData));
+                localStorage.setItem("userDetails", JSON.stringify(updateData));
                 alert("login succesfully");
             }
-            else{
+            else {
                 alert("user is already exist")
-            } 
+            }
             setQuizzPage(true);
         }
-        else{
+        else {
             alert("invalid User");
             setLoginInput(initialState)
             return;
         }
-   
+
     }
     // function loginButton() {
     //     const { email, password } = loginInput;
-    
+
     //     // Find user in signup data
     //     let duplicateData = signupData.find(
     //         (item) => item.email === email
     //     );
-    
+
     //     if (duplicateData) {
     //         let loginDuplicate = loginData.find(user => user.email === email);
-    
+
     //         if (!loginDuplicate) {
     //             let userData = { 
     //                 name: duplicateData.name,
@@ -121,7 +131,7 @@ function Login() {
     //         setLoginInput(initialState);
     //     }
     // }
-    
+
 
     return (
         <>
@@ -168,12 +178,12 @@ function Login() {
                     </div>
 
                     <Button title="Login" textName="login-button" onClick={loginButton} />
-                    
+
                     <div className='google-icon'>
                         <img src="src/assets/images/google.png" alt="Google login" />
                         <p>Login with Google</p>
                     </div>
-                    
+
                     <p className='switch-login'>Don't have an account? <a href="/signup">Signup</a></p>
                 </div>
             </div>

@@ -29,13 +29,6 @@ function Signup() {
     }, [])
 
     // localStorage
-    useEffect(() => {
-        if (signupData.length > 0) {
-            localStorage.setItem("users", JSON.stringify(signupData));
-        } else {
-            localStorage.setItem("users", JSON.stringify([]));
-        }
-    }, [signupData]);
     console.log(signupData);
 
     useEffect(() => {
@@ -99,8 +92,10 @@ function Signup() {
             return;
         }
 
-        let duplicateData = signupData.find((item)=> (item.name === name || item.email === email || item.password)
+        let duplicateData = signupData.find((item)=> (item.name === name && item.email === email && item.password)
         )
+        console.log("duplicateData",duplicateData);
+        
 
         if(!duplicateData){
             let updatedData =[...signupData,signupInput];
@@ -109,10 +104,12 @@ function Signup() {
             alert("signup succesfully")
             setLoginPage(true);
         }
+
         else{
             alert("user already exist");
             return
         }
+        
     }
 
     return (
