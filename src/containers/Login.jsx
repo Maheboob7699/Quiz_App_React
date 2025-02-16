@@ -4,6 +4,7 @@ import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Button from '../components/common/Button';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 let initialState = {
     email: "",
@@ -73,7 +74,7 @@ function Login() {
             )
             if (!loginDuplicate) {
 
-                let newUniqueId = loginData.length === 0 ? uniqueId : uniqueId + 1; 
+                let newUniqueId = loginData.length === 0 ? uniqueId : uniqueId + 1;
                 setUniqueId(newUniqueId);
                 let userData = {
                     id: newUniqueId,
@@ -87,7 +88,7 @@ function Login() {
                 localStorage.setItem("uniqueId", JSON.stringify(newUniqueId));
                 setLoginData(updateData);
                 localStorage.setItem("userDetails", JSON.stringify(updateData));
-                alert("login succesfully");
+                toast.success("login succesfully");
             }
             else {
                 alert("user is already exist")
@@ -101,36 +102,6 @@ function Login() {
         }
 
     }
-    // function loginButton() {
-    //     const { email, password } = loginInput;
-
-    //     // Find user in signup data
-    //     let duplicateData = signupData.find(
-    //         (item) => item.email === email
-    //     );
-
-    //     if (duplicateData) {
-    //         let loginDuplicate = loginData.find(user => user.email === email);
-
-    //         if (!loginDuplicate) {
-    //             let userData = { 
-    //                 name: duplicateData.name,
-    //                 email: duplicateData.email,
-    //                 score: 0,  
-    //                 user: [],
-    //             };
-    //             let updatedUsers = [...loginData, userData];
-    //             setLoginData(updatedUsers);
-    //             localStorage.setItem("userDetails", JSON.stringify(updatedUsers));
-    //             alert("Login successful!");
-    //         } else {
-    //             alert("User is already logged in!");
-    //         }
-    //     } else {
-    //         alert("Invalid User");
-    //         setLoginInput(initialState);
-    //     }
-    // }
 
 
     return (
