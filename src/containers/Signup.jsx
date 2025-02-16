@@ -41,13 +41,12 @@ function Signup() {
 
     //   input
     function handleSignupInput(e) {
-        const { name, value } = e.target;
+        const { name, value,type,checked } = e.target;
         setSignupInput({
             ...signupInput,
-            [name]: value,
+            [name]:type === "checkbox" ? checked: value,
         });
         console.log(signupInput);
-
         setError({ email: '', password: '' })
     }
 
@@ -60,7 +59,7 @@ function Signup() {
 
     // signup button
     function signupButton() {
-        const { name, email, password, } = signupInput;
+        const { name, email, password,checked } = signupInput;
         if (name === "" && email === "" && password === "") {
              toast.error("all fields are required",{
                 autoClose :2000,
@@ -97,6 +96,10 @@ function Signup() {
             setError({ password: "Password must contain at least one special character (@, $, !, %, *, ?, &)" });
             return;
         }
+        if(!checked){
+            toast.success("please accept terms and condition");
+            return;
+        }
 
         let duplicateData = signupData.find((item) => (item.name === name && item.email === email && item.password)
         )
@@ -127,7 +130,6 @@ function Signup() {
             <div className='signup-container'>
                 <div className='quizz-image'>
                     <img src="src/assets/images/quizz.png" alt="" />
-
                 </div>
 
                 <div className='signup-form'>
@@ -161,7 +163,7 @@ function Signup() {
 
                     <div className="sigunp-user-error"></div>
 
-                    <label htmlFor="" className='check-terms'>
+                    <label htmlFor="" className='check-terms' onChange={handleSignupInput}>
                         <input type="checkbox" required />
                         I accept <span>terms & condition</span>
                     </label> <br />
