@@ -1,9 +1,11 @@
 import '../assets/styles/Signup.css';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import Button from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 
 function Signup() {
@@ -12,8 +14,10 @@ function Signup() {
         name: "",
         email: "",
         password: "",
+        checked: false,
     };
     const [signupData, setSignupData] = useState([]);
+    const [hideShow, setHideShow] = useState(false);
     const [signupInput, setSignupInput] = useState(initialData);
     const [error, setError] = useState({
         email: '',
@@ -33,7 +37,7 @@ function Signup() {
 
     useEffect(() => {
     }, [signupInput])
-    
+
 
     //   input
     function handleSignupInput(e) {
@@ -48,17 +52,19 @@ function Signup() {
     }
 
     // login page
-    useEffect(()=>{
-        if(loginPage){
+    useEffect(() => {
+        if (loginPage) {
             navigate("./login")
         }
-    },[loginPage])
+    }, [loginPage])
 
     // signup button
     function signupButton() {
-        const { name, email, password } = signupInput;
+        const { name, email, password, } = signupInput;
         if (name === "" && email === "" && password === "") {
-            alert("all fields are required")
+             toast.error("all fields are required",{
+                autoClose :2000,
+            });
             return;
         };
 
@@ -68,7 +74,7 @@ function Signup() {
         }
 
         if (!email.includes(".com")) {
-            setError({ email:".com is missing"});
+            setError({ email: ".com is missing" });
             return
         }
 
@@ -92,24 +98,28 @@ function Signup() {
             return;
         }
 
-        let duplicateData = signupData.find((item)=> (item.name === name && item.email === email && item.password)
+        let duplicateData = signupData.find((item) => (item.name === name && item.email === email && item.password)
         )
-        console.log("duplicateData",duplicateData);
-        
+        console.log("duplicateData", duplicateData);
 
-        if(!duplicateData){
-            let updatedData =[...signupData,signupInput];
+
+        if (!duplicateData) {
+            let updatedData = [...signupData, signupInput];
             setSignupData(updatedData);
             localStorage.setItem("users",JSON.stringify(updatedData));
-            alert("signup succesfully")
+            toast.success("signup succesfully")
             setLoginPage(true);
         }
 
-        else{
+        else {
             alert("user already exist");
             return
         }
-        
+
+    }
+
+    function handleHideshow() {
+        setHideShow(!hideShow);
     }
 
     return (
@@ -144,15 +154,15 @@ function Signup() {
                             password <span className='required'>*</span>
                         </label>
                         <div className='user-password'>
-                            <input type="password" placeholder='Enter password' name='password' value={signupInput.password} onChange={handleSignupInput} />
-                            <FontAwesomeIcon icon={faEyeSlash} className='hide-password-icon' />
+                            <input type={hideShow ? "text" : "password"} placeholder='Enter password' name='password' value={signupInput.password} onChange={handleSignupInput} />
+                            <FontAwesomeIcon icon={hideShow ? faEye : faEyeSlash} className='hide-password-icon' onClick={handleHideshow} />
                         </div>
                     </div>
 
                     <div className="sigunp-user-error"></div>
 
                     <label htmlFor="" className='check-terms'>
-                        <input type="checkbox" />
+                        <input type="checkbox" required />
                         I accept <span>terms & condition</span>
                     </label> <br />
                     <Button title="Signup" textName="signup-button" onClick={signupButton} />
