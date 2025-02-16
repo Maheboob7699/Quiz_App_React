@@ -1,10 +1,10 @@
 import '../assets/styles/TopRank.css';
 
-function TopRank({ rankClassName, user }) {
+function TopRank({ rankClassName, user,image}) {
   return (
     <div className="top-rank">
       <div className={`${rankClassName}-image`}>
-        <img src={user ? user.imageUrl || 'src/assets/images/person.jpg' : 'src/assets/images/person.jpg'} alt="User" />
+        <img src={image} alt="User" />
       </div>
       <div className={rankClassName}>
         <p className='user-name'>{user ? user.name : 'User not found'}</p>
