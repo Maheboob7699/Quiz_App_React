@@ -5,12 +5,22 @@ import PreviousRank from '../components/PreviousRank';
 import Navbar from "../components/common/Navbar";
 import Button from '../components/common/Button';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 function Quizz() {
     const localQuizzQuestion = JSON.parse(localStorage.getItem("questions")) || [];
+    console.log(localQuizzQuestion);
+    
 
     const localUniqueId = JSON.parse(localStorage.getItem("uniqueId")) || 0;
     const localUser = JSON.parse(localStorage.getItem("userDetails")) || [];
+    console.log(localUser);
+    
+
+    
+//    let sortRank= localUser.sort((a, b) => b.score - a.score);
+//     console.log(sortRank);
+    
 
     const [question, setQuestion] = useState(localQuizzQuestion);
     const [uniqueId, setUniqueId] = useState(localUniqueId);
@@ -26,14 +36,29 @@ function Quizz() {
     console.log("Quiz Questions:", question);
     console.log("Current Question Index:", quizzIndex);
     console.log("unique id", uniqueId);
+console.log("user is",user);
 
+useEffect(()=>{
+
+},[user])
+
+  useEffect(()=>{
+
+  },[score])
+     
+  let sortRank = localUser.sort((a,b)=>b.score-a.score)
+  console.log("score is", score);
+  console.log("sort rank",sortRank[uniqueId].score);
     useEffect(() => {
         console.log("Updated selected option:", selectOption);
     }, [selectOption]);
     
+console.log(user);
 
     console.log(user[uniqueId]);
     let userName = user[uniqueId].name;
+    console.log("username is",userName);
+    
 
 
     // Function to handle next question
@@ -44,14 +69,26 @@ function Quizz() {
         }
         else if (quizzIndex === question.length - 1) {
 
+            let lastUpdate = {
+                question:question,
+                selected:selectedAnswer,
+                score:score
+          }
             let updatedUsers = localUser.map((user) =>
                 user.id === uniqueId
-                    ? { ...user, score: Math.max(user.score, score) }
+                    ? { 
+                        ...user, 
+                        score: Math.max(user.score, score), 
+                        user: [...user.user, { questions: question, selected: selectedAnswer, score: score }]
+                      }
                     : user
             );
             console.log(updatedUsers);
+
+               
             localStorage.setItem("userDetails", JSON.stringify(updatedUsers));
-            alert("are you sure to submit")
+            toast.info("are you sure to submit");
+            setLeaderboardPage(true);
         }
     }
 
@@ -107,16 +144,16 @@ function Quizz() {
             <Navbar name={userName} />
             {leaderboardPage ? (
                 <>
-                    <h2 className='rank-show'>Wow! Your rank is # {quizzIndex + 1}</h2>
+                    <h2 className='rank-show'>Wow! Your rank is # {uniqueId + 1}</h2>
                     <div className="top-ranks-container">
-                        <TopRank rankClassName="rank-2" user={{ name: "User 2" }} />
-                        <TopRank rankClassName="rank-1" user={{ name: "User 1" }} />
-                        <TopRank rankClassName="rank-3" user={{ name: "User 3" }} />
+                        <TopRank rankClassName="rank-2" user={sortRank[1]} image="src/assets/images/person2.jpg" />
+                        <TopRank rankClassName="rank-1" user={sortRank[0]} image="src/assets/images/person.jpg" />
+                        <TopRank rankClassName="rank-3" user={sortRank[2]} image="src/assets/images/person3.jpg" />
                     </div>
                     <div className='previous-ranks'>
-                        <PreviousRank />
-                        <PreviousRank />
-                        <PreviousRank />
+                        <PreviousRank  user={sortRank[user.length-1]} />
+                        <PreviousRank user={sortRank[5]}  />
+                        <PreviousRank user={sortRank[4]}  />
                     </div>
                 </>
             ) : (
