@@ -84,7 +84,7 @@ console.log(user);
                     : user
             );
             console.log(updatedUsers);
-            
+
             localStorage.setItem("userDetails", JSON.stringify(updatedUsers));
             alert("are you sure to submit");
             setLeaderboardPage(true);
@@ -104,9 +104,7 @@ console.log(user);
             }
         }
     }
-
     console.log(previousColor);
-
 
     // Function to handle option selection
     function handleOption(text) {
