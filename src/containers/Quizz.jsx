@@ -84,10 +84,9 @@ console.log(user);
                     : user
             );
             console.log(updatedUsers);
-
-               
+            
             localStorage.setItem("userDetails", JSON.stringify(updatedUsers));
-            toast.info("are you sure to submit");
+            alert("are you sure to submit");
             setLeaderboardPage(true);
         }
     }
