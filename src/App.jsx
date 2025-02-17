@@ -2,7 +2,7 @@
 import SignupPage from './pages/SignupPage'
 import LoginPage from './pages/Loginpage'
 import QuizzPage from './pages/QuizzPage'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';git 
 
 function App() {
 
@@ -10,9 +10,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-        <Route path="/" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/quizz" element={<QuizzPage/>} />
+          <Route path="/" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/quizz" element={<QuizzPage />} />
         </Routes>
       </BrowserRouter>
     </>
