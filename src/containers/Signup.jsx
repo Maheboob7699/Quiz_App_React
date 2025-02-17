@@ -10,15 +10,16 @@ import { toast } from 'react-toastify';
 
 function Signup() {
 
-    let initialData = {
+    let signupInitialInput = {
         name: "",
         email: "",
         password: "",
         checked: false,
     };
+
     const [signupData, setSignupData] = useState([]);
     const [hideShow, setHideShow] = useState(false);
-    const [signupInput, setSignupInput] = useState(initialData);
+    const [signupInput, setSignupInput] = useState(signupInitialInput);
     const [error, setError] = useState({
         email: '',
         password: '',
