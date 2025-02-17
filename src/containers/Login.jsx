@@ -1,20 +1,21 @@
 import '../assets/styles/Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEyeSlash,faEye } from '@fortawesome/free-solid-svg-icons';
 import Button from '../components/common/Button';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-let initialState = {
+let loginInitialInput = {
     email: "",
     password: "",
 };
 
 function Login() {
-    const [loginInput, setLoginInput] = useState(initialState);
+    const [loginInput, setLoginInput] = useState(loginInitialInput);
     const [signupData, setSignupData] = useState([]);
     const [loginData, setLoginData] = useState([]);
+    const [hideShow, setHideShow] =useState(false);
     const [quizzPage, setQuizzPage] = useState(false);
     const savedUniqueId = JSON.parse(localStorage.getItem("uniqueId")) || 0;
     const [uniqueId, setUniqueId] = useState(savedUniqueId);
@@ -97,10 +98,14 @@ function Login() {
         }
         else {
             alert("invalid User");
-            setLoginInput(initialState)
+            setLoginInput(loginInitialInput)
             return;
         }
 
+    }
+
+    function handleHideShow(){
+        setHideShow(!hideShow)
     }
 
 
@@ -137,13 +142,13 @@ function Login() {
                         </label>
                         <div className='user-password'>
                             <input
-                                type="password"
+                                type={hideShow ? "text" :"password"}
                                 placeholder='Enter password'
                                 name='password'
                                 value={loginInput.password}
                                 onChange={handleLoginInput}
                             />
-                            <FontAwesomeIcon icon={faEyeSlash} className='hide-password-icon' />
+                            <FontAwesomeIcon icon={hideShow ?faEye :faEyeSlash} className='hide-password-icon' onClick={handleHideShow} />
                         </div>
                         {/* {error.password && <div className="login-user-error">{error.password}</div>} */}
                     </div>
