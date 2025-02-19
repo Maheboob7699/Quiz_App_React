@@ -5,6 +5,7 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import Button from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 
 
@@ -98,7 +99,7 @@ function Signup() {
             return;
         }
         if(!checked){
-            toast.success("please accept terms and condition");
+            alert("please accept terms and condition");
             return;
         }
 
@@ -173,7 +174,7 @@ function Signup() {
                         <img src="src/assets/images/google.png" alt="" />
                         <p>signup with google</p>
                     </div>
-                    <p className='switch-login'>Dont have an account? <a href="">Login ?</a></p>
+                    <p className='switch-login'>Dont have an account? <Link to={"/login"}>Login ?</Link></p>
                 </div>
             </div>
         </>
