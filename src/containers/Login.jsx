@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash,faEye } from '@fortawesome/free-solid-svg-icons';
 import Button from '../components/common/Button';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 let loginInitialInput = {
@@ -160,7 +160,7 @@ function Login() {
                         <p>Login with Google</p>
                     </div>
 
-                    <p className='switch-login'>Don't have an account? <a href="/signup">Signup</a></p>
+                    <p className='switch-login'>Don't have an account? <Link to="/">Signup</Link></p>
                 </div>
             </div>
         </>
