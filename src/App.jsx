@@ -2,7 +2,7 @@
 import SignupPage from './pages/SignupPage'
 import LoginPage from './pages/Loginpage'
 import QuizzPage from './pages/QuizzPage'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';git 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
 
