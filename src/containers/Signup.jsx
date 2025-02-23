@@ -43,14 +43,16 @@ function Signup() {
 
     //   input
     function handleSignupInput(e) {
-        const { name, value,type,checked } = e.target;
+        const { name, value,type,checked} = e.target;
         setSignupInput({
             ...signupInput,
-            [name]:type === "checkbox" ? checked: value,
+            [name]:type === "checkbox" ? checked:value,
         });
         console.log(signupInput);
         setError({ email: '', password: '' })
     }
+    console.log(signupInput);
+    
 
     // login page
     useEffect(() => {
@@ -61,7 +63,7 @@ function Signup() {
 
     // signup button
     function signupButton() {
-        const { name, email, password,checked } = signupInput;
+        const { name, email, password,checked} = signupInput;
         if (name === "" && email === "" && password === "") {
              toast.error("all fields are required",{
                 autoClose :2000,
@@ -166,7 +168,7 @@ function Signup() {
                     <div className="sigunp-user-error"></div>
 
                     <label htmlFor="" className='check-terms' onChange={handleSignupInput}>
-                        <input type="checkbox" required />
+                        <input type="checkbox" name='checked' required />
                         I accept <span>terms & condition</span>
                     </label> <br />
                     <Button title="Signup" textName="signup-button" onClick={signupButton} />
