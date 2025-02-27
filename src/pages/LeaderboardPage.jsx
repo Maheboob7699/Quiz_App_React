@@ -1,9 +1,9 @@
 import Leaderboard from "../containers/Leaderboard"
-function Leaderboarpage(){
+function Leaderboardpage(){
     return(
         <>
          <Leaderboard/>
         </>
     )
 }
-export default Leaderboarpage
+export default Leaderboardpage
