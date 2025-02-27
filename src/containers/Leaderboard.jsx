@@ -1,5 +1,6 @@
 import TopRank from "../components/TopRank"
 import PreviousRank from "../components/PreviousRank"
+import { useState } from "react";
 function Leaderboard(){
     const localUser = JSON.parse(localStorage.getItem("userDetails")) || [];
     console.log(localUser);
